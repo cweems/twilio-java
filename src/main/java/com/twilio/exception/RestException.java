@@ -9,7 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * Twilio Exceptions.
@@ -51,6 +54,15 @@ public class RestException {
      */
     public static RestException fromJson(final InputStream json, final ObjectMapper objectMapper) {
         // Convert all checked exception to Runtime
+        
+        try {
+            String result = IOUtils.toString(json, StandardCharsets.UTF_8);
+            System.out.println(result);
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
         try {
             return objectMapper.readValue(json, RestException.class);
         } catch (final JsonMappingException | JsonParseException e) {
